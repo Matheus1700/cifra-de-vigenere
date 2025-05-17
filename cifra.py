@@ -1,5 +1,6 @@
 def formarChaveEstendida(chave, mensagem): 
-    chaveFinal = ""; tamanho_msg = len(mensagem)
+    chaveFinal = ""
+    tamanho_msg = len(mensagem)
 
     while True:
         for i in range(len(chave)):
@@ -8,7 +9,6 @@ def formarChaveEstendida(chave, mensagem):
             
             chaveFinal += chave[i]
             tamanho_msg -= 1
-    
 
 def criptografar(chave, mensagem, alfabeto):
     msg_criptografada = ""
@@ -21,7 +21,6 @@ def criptografar(chave, mensagem, alfabeto):
 
     return msg_criptografada
 
-
 def decriptografar(chave, mensagemCifrada, alfabeto):
     msg_decriptografada = ""
     for i in range(len(mensagemCifrada)):
@@ -33,26 +32,32 @@ def decriptografar(chave, mensagemCifrada, alfabeto):
 
     return msg_decriptografada
 
+def verificar_alfabeto(entrada, alfabeto):
+    for char in entrada:
+        if char not in alfabeto:
+            return False
+    return True
 
-chave = "segredo"
-mensagem = "ataque amanha amigo"
+
+chave = input("Digite a chave: ")
+mensagem = input("Digite a mensagem: ")
 alfabeto = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ,;._#*\"\"-+"
 
 
-'''
-alfabeto = "abcdefghijklmnopqrstuvwxyz"
-mensagem = "segredofoda"
-chave = "lontra"
-'''
+if not verificar_alfabeto(chave, alfabeto):
+    print("A mensagem contém caracteres invalidos!")
+else:
+    if not verificar_alfabeto(mensagem, alfabeto):
+        print("A mensagem contém caracteres invalidos!")
+    else:
+        chaveFinal = formarChaveEstendida(chave, mensagem)
+        escolha = input("Quer encriptar ou decriptar a mensagem? (e/d): ").lower()
 
-chaveFinal = formarChaveEstendida(chave, mensagem)
-print("ChaveFinal: ", chaveFinal)
-mensagemCifrada = criptografar(chaveFinal, mensagem, alfabeto)
-print("Mensagem Cifrada: ", mensagemCifrada)
-mensagemDecriptografada = decriptografar(chaveFinal, mensagemCifrada, alfabeto)
-print("Mensagem Decriptografada: ", mensagemDecriptografada)
-
-
-print("Tamanho Mensagem: ", len(mensagem))
-print("Tamanho Chave: ", len(chaveFinal))
-print("Tamanho Mensagem Final: ", len(mensagemCifrada)) 
+        if escolha == 'e':
+            mensagemCifrada = criptografar(chaveFinal, mensagem, alfabeto)
+            print("Mensagem Cifrada: ", mensagemCifrada)
+        elif escolha == 'd':
+            mensagemDecriptografada = decriptografar(chaveFinal, mensagem, alfabeto)
+            print("Mensagem Decriptografada: ", mensagemDecriptografada)
+        else:
+            print("Opção inválida! Digite 'e' para encriptar ou 'd' para decriptar")
